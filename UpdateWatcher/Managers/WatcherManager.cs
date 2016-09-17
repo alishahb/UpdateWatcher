@@ -22,7 +22,7 @@ namespace Alisha.UpdateWatcher.Managers
 
             _elapsedTime = new Stopwatch();
             _ticker = new Timer(1000);
-            _checkTimer = new Timer(TimeSpan.FromSeconds(10).TotalMilliseconds);
+            _checkTimer = new Timer(TimeSpan.FromMinutes(minutesDelay).TotalMilliseconds);
 
             _checkTimer.Elapsed += OnElapsed;
             _checkTimer.AutoReset = false;

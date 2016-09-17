@@ -29,7 +29,7 @@ namespace UpdateWatcher
 
         private void Initialize(object sender, StartupEventArgs startupEventArgs)
         {
-            //AccessManager.Execute();
+            AccessManager.Execute();
 
             Config = ConfigurationManager<ISettings, SettingsData>.Create();
 
