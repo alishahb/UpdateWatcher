@@ -36,15 +36,15 @@ before_build:
       
       }
 build:
-  project: StoreVersionUploader.sln
+  project: UpdateWatcher.sln
   publish_nuget: true
   publish_nuget_symbols: true
   include_nuget_references: true
   verbosity: minimal
   publish_wap: true
 after_build:
-- cmd: 7z a PVU-Product-Version-Uploader-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\StoreVersionUploader\bin\Export\*
-- cmd: appveyor PushArtifact PVU-Product-Version-Uploader-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\StoreVersionUploader\bin\Export\* 
+- cmd: 7z a UpdateWatcher-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\UpdateWatcher\bin\Export\*
+- cmd: appveyor PushArtifact UpdateWatcher-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\UpdateWatcher\bin\Export\* 
 artifacts:
-- path: PVU-%APPVEYOR_BUILD_VERSION%.zip
-  name: Product Version Uploader v%APPVEYOR_BUILD_VERSION%
+- path: UpdateWatcher-%APPVEYOR_BUILD_VERSION%.zip
+  name: UpdateWatcher v%APPVEYOR_BUILD_VERSION%
