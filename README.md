@@ -9,7 +9,7 @@ Utility to watch for new version of software by provided URL
 * **Copy files:** specified by Settings from `Extract folder`to other locations
 * **Rename files**: in `Extract folder` with filtering by name and extension, support option to enable recursive check in subfolders
 * **Delete Existing**: option to delete existing folder and all contents, if needed (i.e. to perform **Clean install**)
-* Mods: 
+* **Mods:** 
   * _Manual_: one time check by buttpn press
   * _Daemon_: run check each time when specified delay timeout passed
 
