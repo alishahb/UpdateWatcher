@@ -12,9 +12,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Export|Any CPU = Export|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B7B29C4-672D-41EB-929C-28BB794FA454}.Export|Any CPU.ActiveCfg = Export|Any CPU
+		{6B7B29C4-672D-41EB-929C-28BB794FA454}.Export|Any CPU.Build.0 = Export|Any CPU
 		{6B7B29C4-672D-41EB-929C-28BB794FA454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6B7B29C4-672D-41EB-929C-28BB794FA454}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B7B29C4-672D-41EB-929C-28BB794FA454}.Release|Any CPU.ActiveCfg = Release|Any CPU
