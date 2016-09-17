@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="Alisha.UpdateWatcher.Controls.RenameItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Alisha.UpdateWatcher.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="40"
+             d:DesignWidth="500"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             mc:Ignorable="d">
+
+    <Border BorderBrush="Gainsboro" BorderThickness="1">
+        <DockPanel LastChildFill="True">
+            <DockPanel Width="130" HorizontalAlignment="Stretch" VerticalAlignment="Top" DockPanel.Dock="Right">
+                <Label DockPanel.Dock="Left">Extension Filter:</Label>
+                <TextBox HorizontalAlignment="Stretch" DockPanel.Dock="Right" Text="{Binding Item.Extension}" />
+            </DockPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+
+                <DockPanel Grid.Column="0" VerticalAlignment="Top" DockPanel.Dock="Left">
+                    <Label DockPanel.Dock="Left">From:</Label>
+                    <TextBox HorizontalAlignment="Stretch" DockPanel.Dock="Right" Text="{Binding Item.From}" />
+                </DockPanel>
+
+                <DockPanel Grid.Column="1" VerticalAlignment="Top" DockPanel.Dock="Right">
+                    <Label DockPanel.Dock="Left">To:</Label>
+                    <TextBox HorizontalAlignment="Stretch" DockPanel.Dock="Right" Text="{Binding Item.To}" />
+                </DockPanel>
+
+            </Grid>
+
+
+
+        </DockPanel>
+    </Border>
+</UserControl>

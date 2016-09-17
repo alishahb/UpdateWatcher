@@ -1,0 +1,3 @@
+eye icon: 
+- http://www.flaticon.com/free-icon/eye_217458
+- http://www.flaticon.com/free-icon/eye_217463
