@@ -20,7 +20,7 @@ All Settings stored in `Settings.json` file.
 
 _In Example folder you can finde settings file for Honorbuddy._
 
-![GUI Screenshot - Settings](https://snag.gy/u8CUAE.jpg)
+![GUI Screenshot - Settings](https://snag.gy/oIhLnd.jpg)
 ![GUI Screenshot - Downloading](https://snag.gy/AIFkOP.jpg)
 ![GUI Screenshot - Daemon](https://snag.gy/AcR0vB.jpg)
 
