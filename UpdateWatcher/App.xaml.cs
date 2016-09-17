@@ -199,6 +199,8 @@ namespace UpdateWatcher
 
             if (!Config.Settings.DaemonMode)
             {
+                Logger.Debug($"All done, nothing to do");
+                OnWorkCompleted?.Invoke(this, null);
                 return false;
             }
 
