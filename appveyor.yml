@@ -15,7 +15,7 @@ before_build:
       {
         echo "Version correction"
         $foundFiles = get-childitem C:\projects\*AssemblyInfo.cs -recurse  
-        cecho "Files count:" $foundFiles.Count
+        echo "Files count:" $foundFiles.Count
         foreach( $file in $foundFiles )  
         {  
           $globalAssemblyFile = $file.FullName
