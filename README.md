@@ -1,7 +1,9 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/3rgccemaeafr2jv8?svg=true)](https://ci.appveyor.com/project/alishahb/updatewatcher)
 
 # UpdateWatcher
-Utility to watch for new version of software by provided URL
+Utility to watch for new version of software by provided URL and Auto download & Extract, rename / Copy needed files.
+
+Be always in touch! ლ(ಠ益ಠლ) .
 
 ##Goal:
 * **Download** zip packages from Url
