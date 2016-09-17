@@ -45,7 +45,7 @@ namespace Alisha.UpdateWatcher.Interfaces
         bool DaemonMode { get; set; }
 
         [DataMember(EmitDefaultValue = true)]
-        [DefaultValue(5)]
+        [DefaultValue(30)]
         int NextCheckAfter { get; set; }
 
     }
