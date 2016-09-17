@@ -3,6 +3,18 @@
 # UpdateWatcher
 Utility to watch for new version of software by provided URL
 
+##Goal:
+* Download zip packages from Url
+* Extract to specified folder
+* Copy specified files from extracted to other folder
+* Rename specified files with filtering by name and extension
+* Mods: 
+  * _Manual_: one time check by buttpn press
+  * _Daemon_: run check each time when specified delay timeout passed
+
+
+
+
 Download last succcess build: https://ci.appveyor.com/project/alishahb/updatewatcher/build/artifacts
 
 #Require .Net 4.6.1
