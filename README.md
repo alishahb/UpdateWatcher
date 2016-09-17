@@ -4,10 +4,11 @@
 Utility to watch for new version of software by provided URL
 
 ##Goal:
-* Download zip packages from Url
-* Extract to specified folder
-* Copy specified files from extracted to other folder
-* Rename specified files with filtering by name and extension
+* **Download** zip packages from Url
+* **Extract archive** to `Extract folder` specified by Settings
+* **Copy files:** specified by Settings from `Extract folder`to other locations
+* **Rename files**: in `Extract folder` with filtering by name and extension, support option to enable recursive check in subfolders
+* **Delete Existing**: option to delete existing folder and all contents, if needed (i.e. to perform **Clean install**)
 * Mods: 
   * _Manual_: one time check by buttpn press
   * _Daemon_: run check each time when specified delay timeout passed
