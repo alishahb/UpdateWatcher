@@ -33,7 +33,7 @@ before_build:
           break
         }
       }
-      echo "build folder:" %APPVEYOR_BUILD_FOLDER%
+      echo "build folder: $env:APPVEYOR_BUILD_FOLDER"
 build:
   project: UpdateWatcher.sln
   publish_nuget: true
