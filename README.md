@@ -38,3 +38,10 @@ Download: https://www.microsoft.com/en-us/download/details.aspx?id=49981
 * Restoring NuGet package OpenDialog.1.1.1.
 * Restoring NuGet package SevenZipSharp.0.64.0.
 * Restoring NuGet package SevenZipSharp.Net45.1.0.4
+
+#Legal
+**UpdateWatcher Licence:** Apache License version 2.0
+
+* _eye icon:_ by by Trinh Ho in medical via Flaticon Base License http://file000.flaticon.com/downloads/license/license.pdf
+  * http://www.flaticon.com/free-icon/eye_217458
+  * http://www.flaticon.com/free-icon/eye_217463
