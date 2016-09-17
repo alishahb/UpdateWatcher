@@ -42,8 +42,8 @@ build:
   verbosity: minimal
   publish_wap: true
 after_build:
-- cmd: 7z a UpdateWatcher-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\UpdateWatcher\UpdateWatcher\bin\Export\*
-- cmd: appveyor PushArtifact UpdateWatcher-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\UpdateWatcher\UpdateWatcher\bin\Export\* 
+- cmd: 7z a UpdateWatcher-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\UpdateWatcher\bin\Export\*
+- cmd: appveyor PushArtifact UpdateWatcher-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\UpdateWatcher\bin\Export\* 
 artifacts:
 - path: UpdateWatcher-%APPVEYOR_BUILD_VERSION%.zip
   name: UpdateWatcher v%APPVEYOR_BUILD_VERSION%
