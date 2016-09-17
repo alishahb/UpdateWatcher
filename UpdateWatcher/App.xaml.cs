@@ -57,7 +57,8 @@ namespace UpdateWatcher
             WatcherManager.OnWatchCycleCompleted += OnWatchCycleCompleted;
             WatcherManager.OnTick += OnWatcherTick;
 
-            Logger = LogManager.GetCurrentClassLogger();
+            Logger = LogManager.GetLogger("logfile");
+            Logger.Debug("Launched");
 
             MainWindow = new MainWindow();
             MainWindow.Show();

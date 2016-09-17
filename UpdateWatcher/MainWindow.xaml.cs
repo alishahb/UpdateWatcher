@@ -151,7 +151,7 @@ namespace UpdateWatcher
             if (Settings.MinimizeToTray)
                 Hide();
 
-            Task.Run(() => ((App)App.Current).Download());
+            ((App)App.Current).Download();
 
         }
 
@@ -167,9 +167,12 @@ namespace UpdateWatcher
         {
             if (!App.Settings.DaemonMode)
             {
-                ResetState();
-                DownlloadProgressBar.Visibility = Visibility.Collapsed;
-                WatcherTimer.Visibility = Visibility.Hidden;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ResetState();
+                    DownlloadProgressBar.Visibility = Visibility.Collapsed;
+                    WatcherTimer.Visibility = Visibility.Hidden;
+                });
             }
 
         }
@@ -205,7 +208,10 @@ namespace UpdateWatcher
 
 
         void Watcher_Changed(object sender, LogWatcherEventArgs e) =>
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { AppendText(e.Contents); }));
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            {
+                AppendText(e.Contents);
+            }));
 
         private void AppendText(string data)
         {

@@ -19,7 +19,7 @@ namespace Alisha.UpdateWatcher.Managers
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-            Stream = new FileStream (FileName, FileMode.OpenOrCreate, FileAccess.ReadWrite,  FileShare.ReadWrite);
+            Stream = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             Reader = new StreamReader(Stream);
 
             Stream.Position = Stream.Length;
@@ -28,7 +28,7 @@ namespace Alisha.UpdateWatcher.Managers
         public void OnChanged(object o, FileSystemEventArgs e)
         {
             string Contents = Reader.ReadToEnd();
-            
+
             LogWatcherEventArgs args = new LogWatcherEventArgs(Contents);
             TextChanged?.Invoke(this, args);
         }
