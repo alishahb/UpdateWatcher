@@ -13,6 +13,9 @@ Utility to watch for new version of software by provided URL
   * _Manual_: one time check by buttpn press
   * _Daemon_: run check each time when specified delay timeout passed
 
+All Settings stored in `Settings.json` file.
+
+_In Example folder you can finde settings file for Honorbuddy._
 
 
 
