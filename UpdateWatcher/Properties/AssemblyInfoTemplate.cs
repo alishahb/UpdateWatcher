@@ -34,6 +34,5 @@ using System.Runtime.InteropServices;
 //
 // Можно задать все значения или принять номер построения и номер редакции по умолчанию, 
 // используя "*", как показано ниже:
-// [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.$WCREV$.$WCNOW=%H%M$")]
 [assembly: AssemblyInformationalVersion("Build date: $WCNOW=%Y-%m-%d %H:%M:%S$; Revision date: $WCDATE=%Y-%m-%d %H:%M:%S$; Revision(s) in working copy: $WCRANGE$$WCMODS?; WARNING working copy had uncommitted modifications:$.")]
