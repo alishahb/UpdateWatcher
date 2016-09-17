@@ -1,20 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using Alisha.UpdateWatcher.Interfaces;
-using Alisha.UpdateWatcher.Models;
+using Alisha.UpdateWatcher.Managers;
 using UserControl = System.Windows.Controls.UserControl;
 
 namespace Alisha.UpdateWatcher.Controls
@@ -35,21 +21,8 @@ namespace Alisha.UpdateWatcher.Controls
 
         private void Browse(object sender, RoutedEventArgs e)
         {
-            CopyItem.Path = OpenDialog(CopyItem.Path);
+            CopyItem.Path = DialogManager.OpenDialog(CopyItem.Path);
         }
 
-        private string OpenDialog(string dependedObject)
-        {
-            var value = dependedObject;
-
-            var dlg = new FolderBrowserDialog { SelectedPath = new DirectoryInfo(dependedObject).FullName };
-
-            if (dlg.ShowDialog() == DialogResult.OK)
-            {
-                value = dlg.SelectedPath;
-            }
-
-            return value;
-        }
     }
 }

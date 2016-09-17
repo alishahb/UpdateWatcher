@@ -7,7 +7,6 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Threading;
@@ -244,36 +243,13 @@ namespace UpdateWatcher
 
         private void BtnDrowseDownloadFolder_OnClick(object sender, RoutedEventArgs e)
         {
-            Settings.DownloadFolder = OpenDialog(Settings.DownloadFolder);
+            Settings.DownloadFolder = DialogManager.OpenDialog(Settings.DownloadFolder);
         }
 
-        private string OpenDialog(string dependedObject)
-        {
-            var value = dependedObject;
-
-            var dlg = new FolderBrowserDialog { SelectedPath = Environment.CurrentDirectory };
-
-            try
-            {
-                if (new DirectoryInfo(value).Exists)
-                    dlg.SelectedPath = value;
-            }
-            catch (Exception)
-            {
-            }
-
-
-            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                value = dlg.SelectedPath;
-            }
-
-            return value;
-        }
 
         private void BtnDrowseExtractFolder_OnClick(object sender, RoutedEventArgs e)
         {
-            Settings.ExtractFolder = OpenDialog(Settings.ExtractFolder);
+            Settings.ExtractFolder = DialogManager.OpenDialog(Settings.ExtractFolder);
         }
 
 

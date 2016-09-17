@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
@@ -42,7 +41,7 @@ namespace UpdateWatcher
 
             Config.Settings.DownloadFolder = DirectoryManager.CheckAndCreate(Config.Settings.DownloadFolder, Config.SettingsDirectoryPath, "Download");
             Config.Settings.ExtractFolder = DirectoryManager.CheckAndCreate(Config.Settings.ExtractFolder, Config.SettingsDirectoryPath, "Extract");
-            
+
             Config.Save();
 
             DownloadManager = new DownloadManager(Config.Settings.DownloadUrl, Config.Settings.DownloadFolder);
@@ -86,6 +85,12 @@ namespace UpdateWatcher
 
         private void OnDownloadedFileSaved(object sender, EventArgs e)
         {
+            if (DownloadManager.DownloadResult == DownloadResult.Failed)
+            {
+                Logger.Debug($"DownloadManager :: Check Failed: {DownloadManager.ErrorMessage}");
+
+            }
+
             var info = (FileInfo)sender;
             if (DownloadManager.DownloadResult == DownloadResult.Success)
             {
@@ -102,6 +107,7 @@ namespace UpdateWatcher
                     .ContinueWith(a => Rename())
                     .ContinueWith(a => Watcher());
             }
+
 
         }
 

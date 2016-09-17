@@ -175,6 +175,7 @@
     <Compile Include="Managers\CleanUpManager.cs" />
     <Compile Include="Managers\ConfigurationManager.cs" />
     <Compile Include="Managers\CopyManager.cs" />
+    <Compile Include="Managers\DialogManager.cs" />
     <Compile Include="Managers\DirectoryManager.cs" />
     <Compile Include="Managers\DownloadManager.cs" />
     <Compile Include="Managers\ExtractManager.cs" />

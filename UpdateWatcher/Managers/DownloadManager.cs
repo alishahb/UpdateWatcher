@@ -26,6 +26,7 @@ namespace Alisha.UpdateWatcher.Managers
         public string Url { get; set; }
         public string Path { get; set; }
         public AsyncCompletedEventArgs Result { get; protected set; }
+        public string ErrorMessage { get; protected set; }
 
 
         #region DownloadResult
@@ -103,8 +104,9 @@ namespace Alisha.UpdateWatcher.Managers
                     response = request.GetResponse();
 
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    ErrorMessage = e.Message;
                     SetDownloadResult(DownloadResult.Failed, null);
                     return;
                 }
