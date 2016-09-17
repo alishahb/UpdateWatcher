@@ -24,8 +24,9 @@ _In Example folder you can finde settings file for Honorbuddy._
 ![GUI Screenshot - Daemon](https://snag.gy/AcR0vB.jpg)
 
 
-
-Download last succcess build: https://ci.appveyor.com/project/alishahb/updatewatcher/build/artifacts
+#Download compiled
+* **Last succcess build** from Appveyor: https://ci.appveyor.com/project/alishahb/updatewatcher/build/artifacts
+* **Last release build** from Github: https://github.com/alishahb/UpdateWatcher/releases/
 
 #Require .Net 4.6.1
 Download: https://www.microsoft.com/en-us/download/details.aspx?id=49981
