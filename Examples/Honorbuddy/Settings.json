@@ -1,0 +1,19 @@
+{
+  "CopyItems": [],
+  "RenameFiles": [
+    {
+      "$type": "Alisha.UpdateWatcher.Models.RenameItem, UpdateWatcher",
+      "From": "Honorbuddy",
+      "To": "Notepad",
+      "Extension": ".exe"
+    }
+  ],
+  "DownloadFolder": "",
+  "LastFileData": null,
+  "DownloadUrl": "http://updates.buddyauth.com/GetNewest?filter=HonorBuddy",
+  "ExtractFolder": "",
+  "MinimizeToTray": true,
+  "DeleteExisting": false,
+  "DaemonMode": true,
+  "NextCheckAfter": 30
+}
