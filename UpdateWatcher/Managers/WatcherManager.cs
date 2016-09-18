@@ -12,46 +12,59 @@ namespace Alisha.UpdateWatcher.Managers
         public event EventHandler OnWatchCycleCompleted;
 
         public int MinutesDelay { get; }
-        private Timer _checkTimer { get; set; }
-        private Timer _ticker { get; set; }
+        private Timer _cycleTimer { get; set; }
+        private Timer _tickTimer { get; set; }
         public Stopwatch _elapsedTime { get; private set; }
+        private bool IsWorking { get; set; }
+        public uint CycleNumber { get; protected set; }
 
         public WatcherManager(int minutesDelay)
         {
             MinutesDelay = minutesDelay;
 
             _elapsedTime = new Stopwatch();
-            _ticker = new Timer(1000);
-            _checkTimer = new Timer(TimeSpan.FromMinutes(minutesDelay).TotalMilliseconds);
+            _tickTimer = new Timer(1000);
+            _cycleTimer = new Timer(TimeSpan.FromMinutes(minutesDelay).TotalMilliseconds);
 
-            _checkTimer.Elapsed += OnElapsed;
-            _checkTimer.AutoReset = false;
+            _cycleTimer.Elapsed += OnCycleElapsed;
+            _cycleTimer.AutoReset = true;
 
-            _ticker.Elapsed += OnTickElapsed;
-            _ticker.AutoReset = true;
+            _tickTimer.Elapsed += OnTickElapsed;
+            _tickTimer.AutoReset = true;
 
         }
 
         public void Execute()
         {
+            if (IsWorking) return;
+
+            IsWorking = true;
+
             OnWatchStarted?.Invoke(this, null);
 
-            _checkTimer.Start();
+            _cycleTimer.Start();
             _elapsedTime.Restart();
-            _ticker.Start();
+            _tickTimer.Start();
 
         }
 
         private void OnTickElapsed(object sender, ElapsedEventArgs e) => OnTick?.Invoke(_elapsedTime.Elapsed, null);
-        private void OnElapsed(object sender, ElapsedEventArgs e) => OnWatchCycleCompleted?.Invoke(this, e);
+        private void OnCycleElapsed(object sender, ElapsedEventArgs e)
+        {
+            CycleNumber++;
+            OnWatchCycleCompleted?.Invoke(this, e);
+        }
 
         public void Cancel()
         {
             _elapsedTime.Stop();
-            _ticker?.Stop();
-            _checkTimer?.Stop();
+            _tickTimer?.Stop();
+            _cycleTimer?.Stop();
 
             OnWatchStopped?.Invoke(this, null);
+
+            IsWorking = false;
+            CycleNumber = 0;
         }
 
         public void Dispose()
@@ -59,11 +72,11 @@ namespace Alisha.UpdateWatcher.Managers
             _elapsedTime.Stop();
             _elapsedTime = null;
 
-            _ticker?.Stop();
-            _ticker?.Dispose();
+            _tickTimer?.Stop();
+            _tickTimer?.Dispose();
 
-            _checkTimer?.Stop();
-            _checkTimer?.Dispose();
+            _cycleTimer?.Stop();
+            _cycleTimer?.Dispose();
 
             OnWatchStopped?.Invoke(this, null);
 

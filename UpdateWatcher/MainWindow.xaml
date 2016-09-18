@@ -140,5 +140,21 @@
                 </StackPanel>
             </DockPanel>
         </TabItem>
+        <TabItem Header="Builds">
+            <DockPanel HorizontalAlignment="Stretch">
+                <StackPanel Margin="5,2" HorizontalAlignment="Right" DockPanel.Dock="Bottom">
+                    <Button Click="SaveBuildsInfo" Padding="5,0">Save</Button>
+                </StackPanel>
+                <DataGrid AutoGenerateColumns="False" DockPanel.Dock="Top" ItemsSource="{Binding Builds}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding FileName}" Header="File Name" />
+                        <DataGridTextColumn Binding="{Binding FileSize}" Header="File Size [bytes]" />
+                        <DataGridTextColumn Binding="{Binding FullPath}" Header="Path" />
+                        <DataGridCheckBoxColumn Binding="{Binding Ignore}" Header="Ignore" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </DockPanel>
+        </TabItem>
     </TabControl>
 </Window>

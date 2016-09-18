@@ -19,11 +19,20 @@ namespace Alisha.UpdateWatcher.Managers
         Success = 4,
     }
 
+    public delegate void FileInfoHandler(FileInfo info);
+        
+
     public class DownloadManager : INotifyPropertyChanged
     {
+
+        public event FileInfoHandler OnDownloadDataCompleted;
+        public event DownloadProgressChangedEventHandler OnDownloadProgressChanged;
+        public event FileInfoHandler OnDownloadedFileSaved;
+        public event FileInfoHandler OnDownloadStarted;
+        
+
         private static object locker = new Object();
 
-        public string Url { get; set; }
         public string Path { get; set; }
         public AsyncCompletedEventArgs Result { get; protected set; }
         public string ErrorMessage { get; protected set; }
@@ -54,8 +63,6 @@ namespace Alisha.UpdateWatcher.Managers
 
         #endregion EndOf-DownloadResult
 
-
-
         #region FileName
         protected string _fileName;
         public string FileName
@@ -68,19 +75,18 @@ namespace Alisha.UpdateWatcher.Managers
 
 
 
-        public DownloadManager(string url, string path)
+        public DownloadManager(string path)
         {
-            Url = url;
             Path = path;
             DownloadResult = DownloadResult.Idle;
 
         }
 
-        public void Execute()
+        public void Execute(string url)
         {
             DownloadResult = DownloadResult.Idle;
 
-            if (string.IsNullOrEmpty(Url))
+            if (string.IsNullOrEmpty(url))
             {
                 SetDownloadResult(DownloadResult.Failed, null);
                 return;
@@ -89,7 +95,7 @@ namespace Alisha.UpdateWatcher.Managers
             using (var client = new WebClient())
             {
                 //WebRequest request = WebRequest.Create(Url);
-                HttpWebRequest request = WebRequest.Create(Url) as HttpWebRequest;
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
                 request.KeepAlive = false;
                 request.Timeout = 5000;
                 request.Proxy = null;
@@ -114,7 +120,7 @@ namespace Alisha.UpdateWatcher.Managers
                 FileName = System.IO.Path.GetFileName(response.ResponseUri.LocalPath) ?? Guid.NewGuid().ToString();
 
 
-                OnDownloadStarted?.Invoke(FileName, null);
+                OnDownloadStarted?.Invoke(new FileInfo(FileName));
 
                 if (response.Headers["Content-Disposition"] != null)
                     FileName = new ContentDisposition(response.Headers["Content-Disposition"])?.FileName;
@@ -152,7 +158,7 @@ namespace Alisha.UpdateWatcher.Managers
 
                 client.DownloadDataCompleted += DownloadDataCompleted;
                 client.DownloadProgressChanged += DownloadProgressChanged;
-                client.DownloadDataAsync(new Uri(Url));
+                client.DownloadDataAsync(new Uri(url));
 
             }
         }
@@ -161,12 +167,6 @@ namespace Alisha.UpdateWatcher.Managers
         {
             OnDownloadProgressChanged?.Invoke(sender, e);
         }
-
-        public event DownloadDataCompletedEventHandler OnDownloadDataCompleted;
-        public event DownloadProgressChangedEventHandler OnDownloadProgressChanged;
-        public event EventHandler OnDownloadedFileSaved;
-        public event EventHandler OnDownloadStarted;
-
 
         private void DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
 
@@ -188,7 +188,7 @@ namespace Alisha.UpdateWatcher.Managers
             }
 
             info = new FileInfo(_destination);
-            OnDownloadedFileSaved?.Invoke(info, null);
+            OnDownloadedFileSaved?.Invoke(info);
 
         }
 
@@ -196,7 +196,7 @@ namespace Alisha.UpdateWatcher.Managers
         {
             DownloadResult = downloadResult;
 
-            OnDownloadDataCompleted?.Invoke(info, null);
+            OnDownloadDataCompleted?.Invoke(info);
 
             return info;
         }

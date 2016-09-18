@@ -156,6 +156,8 @@
     <Compile Include="Converter\EnumValueConverter.cs" />
     <Compile Include="Converter\NullToEmptyStringResolver.cs" />
     <Compile Include="Converter\NullToEmptyStringValueProvider.cs" />
+    <Compile Include="Interfaces\IBuilds.cs" />
+    <Compile Include="Interfaces\IBuildData.cs" />
     <Compile Include="Interfaces\ICopyItem.cs" />
     <Compile Include="Interfaces\IFileData.cs" />
     <Compile Include="Interfaces\IInterface.cs" />
@@ -172,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Managers\AccessManager.cs" />
+    <Compile Include="Managers\BuildsManager.cs" />
     <Compile Include="Managers\CleanUpManager.cs" />
     <Compile Include="Managers\ConfigurationManager.cs" />
     <Compile Include="Managers\CopyManager.cs" />
@@ -186,7 +189,10 @@
     </Compile>
     <Compile Include="Managers\RenameManager.cs" />
     <Compile Include="Managers\WatcherManager.cs" />
+    <Compile Include="Models\BuildData.cs" />
+    <Compile Include="Models\Builds.cs" />
     <Compile Include="Models\CopyItem.cs" />
+    <Compile Include="Models\DataModel.cs" />
     <Compile Include="Models\FileData.cs" />
     <Compile Include="Models\RenameItem.cs" />
     <Compile Include="Models\SettingsData.cs" />

@@ -48,12 +48,12 @@ namespace Alisha.UpdateWatcher.Managers
         private readonly Type _type;
 
 
-        public T Settings { get; protected set; }
+        public T Data { get; protected set; }
 
         internal ConfigurationManager(string directory = "Settings", string fileName = "Settings")
         {
             _type = typeof(U);
-            Settings = (T)Activator.CreateInstance(_type);
+            Data = (T)Activator.CreateInstance(_type);
             SettingsDirectoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, directory);
             SettingsFileName = $"{fileName}.json";
             SettingsFullPath = Path.Combine(SettingsDirectoryPath, SettingsFileName);
@@ -74,7 +74,7 @@ namespace Alisha.UpdateWatcher.Managers
                     var jsonSettings = JsonConvert.DefaultSettings;
                     JsonConvert.DefaultSettings = () => _deserializerSettings;
 
-                    Settings = (T)JsonConvert.DeserializeObject(File.ReadAllText(SettingsFullPath), _type);
+                    Data = (T)JsonConvert.DeserializeObject(File.ReadAllText(SettingsFullPath), _type);
 
                     JsonConvert.DefaultSettings = jsonSettings;
                 }
@@ -83,7 +83,7 @@ namespace Alisha.UpdateWatcher.Managers
                     throw new Exception("Can't deserialize Settings from file");
                 }
             }
-            ((U)Settings).PropertyChanged += PropertyChanged;
+            ((U)Data).PropertyChanged += PropertyChanged;
         }
 
         private void PropertyChanged(object sender, PropertyChangedEventArgs e) => Save();
@@ -96,7 +96,7 @@ namespace Alisha.UpdateWatcher.Managers
 
         public void Save()
         {
-            var settingsConcreteType = Convert.ChangeType(Settings, _type);
+            var settingsConcreteType = Convert.ChangeType(Data, _type);
 
             File.WriteAllText(SettingsFullPath, JsonConvert.SerializeObject(settingsConcreteType, _serializerSettings));
 

@@ -4,15 +4,15 @@ using Alisha;
 
 namespace Alisha.UpdateWatcher.Interfaces
 {
-    public interface IFileData
+    public interface IFileData : IInterface
     {
         [DataMember(EmitDefaultValue = true)]
         [DefaultValue(0)]
-        long FileSize { get; }
+        long FileSize { get; set; }
 
         [DataMember(EmitDefaultValue = true)]
         [DefaultValue(typeof(string))]
-        string FileName { get; }
+        string FileName { get; set; }
 
 
         [DataMember(EmitDefaultValue = true)]

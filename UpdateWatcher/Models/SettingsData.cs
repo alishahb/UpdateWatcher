@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
 using Alisha;
 using Alisha.UpdateWatcher.Annotations;
 using Alisha.UpdateWatcher.Converter;
@@ -13,9 +12,8 @@ using Newtonsoft.Json;
 namespace Alisha.UpdateWatcher.Models
 {
     [DataContract]
-    class SettingsData : ISettings, INotifyPropertyChanged
+    class SettingsData : DataModel, ISettings, INotifyPropertyChanged
     {
-        public static readonly Regex NumberCheckRegex = new Regex("[0-9]+");
 
         [DataMember]
         [JsonConverter(typeof(InterfaceListConverter<ICopyItem, CopyItem>))]

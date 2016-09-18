@@ -30,6 +30,7 @@ namespace UpdateWatcher
         internal LogWatcher _logWatcher;
         private NotifyIcon _ni;
         public ISettings Settings => App.Settings;
+        public ObservableCollection<IBuildData> Builds => App.Builds;
         public DownloadManager DownloadManager => App.DownloadManager;
 
 
@@ -303,6 +304,11 @@ namespace UpdateWatcher
 
             Settings.RenameFiles.Remove(selected.Item);
             RenameItems.Remove(selected);
+        }
+
+        private void SaveBuildsInfo(object sender, RoutedEventArgs e)
+        {
+            ((App)App.Current).Save();
         }
     }
 }
