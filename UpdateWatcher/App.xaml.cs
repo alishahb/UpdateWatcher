@@ -35,20 +35,11 @@ namespace UpdateWatcher
         {
             AccessManager.Execute();
 
-            Logger = LogManager.GetLogger("logfile");
-            Logger.Debug("Launched");
-
-
             Config = ConfigurationManager<ISettings, SettingsData>.Create();
             BuildsInfo = ConfigurationManager<IBuilds, Builds>.Create("Builds");
 
-            BuildsManager = new BuildsManager(Builds);
-            BuildsManager.OnBuildAdded += OnBuildAdded;
-            BuildsManager.OnBuildsAdded += OnBuildsAdded;
-            BuildsManager.OnBuildRemoved += OnBuildRemoved;
-            BuildsManager.OnBuildsRemoved += OnBuildsRemoved;
-            BuildsManager.UpdateInfo(Settings.DownloadFolder);
-
+            Config.Data.DownloadFolder = DirectoryManager.CheckAndCreate(Config.Data.DownloadFolder, Config.SettingsDirectoryPath, "Download");
+            Config.Data.ExtractFolder = DirectoryManager.CheckAndCreate(Config.Data.ExtractFolder, Config.SettingsDirectoryPath, "Extract");
 
             if (Config.Data.CopyItems == null)
                 Config.Data.CopyItems = new ObservableCollection<ICopyItem>();
@@ -58,9 +49,21 @@ namespace UpdateWatcher
             if (BuildsInfo.Data.Items == null)
                 BuildsInfo.Data.Items = new ObservableCollection<IBuildData>();
 
-            Config.Data.DownloadFolder = DirectoryManager.CheckAndCreate(Config.Data.DownloadFolder, Config.SettingsDirectoryPath, "Download");
-            Config.Data.ExtractFolder = DirectoryManager.CheckAndCreate(Config.Data.ExtractFolder, Config.SettingsDirectoryPath, "Extract");
+            if (Config.Data.NextCheckAfter < 1)
+                Config.Data.NextCheckAfter = 1;
 
+            Logger = LogManager.GetLogger("logfile");
+            Logger.Debug("Launched");
+
+            BuildsManager = new BuildsManager(Builds);
+            BuildsManager.OnBuildAdded += OnBuildAdded;
+            BuildsManager.OnBuildsAdded += OnBuildsAdded;
+            BuildsManager.OnBuildRemoved += OnBuildRemoved;
+            BuildsManager.OnBuildsRemoved += OnBuildsRemoved;
+
+
+            BuildsManager.UpdateInfo(Settings.DownloadFolder);
+            RevertBuild();
             Config.Save();
 
             DownloadManager = new DownloadManager(Config.Data.DownloadFolder);
@@ -79,7 +82,7 @@ namespace UpdateWatcher
             MainWindow = new MainWindow();
             MainWindow.Show();
 
-            RevertBuild();
+
 
         }
 
@@ -171,7 +174,7 @@ namespace UpdateWatcher
             if (BuildsManager.IsIgnored(info.FullName))
                 Logger.Debug($"CheckIgnore Manager :: This build marked as ignored {info.Name}, Size: {info.Length}, skipping");
 
-            if (!BuildsManager.IsIgnored(info.FullName) && Settings.LastFileData.FullPath != info.FullName)
+            if (!BuildsManager.IsIgnored(info.FullName) && Settings.LastFileData?.FullPath != info.FullName)
             {
                 Settings.LastFileData = new FileData(info);
 
@@ -324,6 +327,7 @@ namespace UpdateWatcher
 
         private void RevertBuild()
         {
+            if (Settings.LastFileData == null) return;
             if (BuildsManager.IsIgnored(Settings.LastFileData.FullPath))
             {
                 Logger.Debug($"RevertBuild Manager :: Current build [{Settings.LastFileData.FileName}] marked as ignored, will try revert previous if have one");
