@@ -31,6 +31,8 @@ namespace UpdateWatcher
         private NotifyIcon _ni;
         public ISettings Settings => App.Settings;
         public ObservableCollection<IBuildData> Builds => App.Builds;
+
+
         public DownloadManager DownloadManager => App.DownloadManager;
 
 
@@ -92,6 +94,8 @@ namespace UpdateWatcher
 
             ((App)App.Current).OnWorkCompleted += OnWorkCompleted;
             ((App)App.Current).OnTick += OnTick;
+            ((App)App.Current).OnTick += OnTick;
+
             App.DownloadManager.OnDownloadProgressChanged += OnDownloadProgressChanged;
 
             ResetState();
@@ -102,6 +106,8 @@ namespace UpdateWatcher
 
             CreateLogWatcher(GetLogFile());
         }
+
+
 
         private void SetupContainers()
         {

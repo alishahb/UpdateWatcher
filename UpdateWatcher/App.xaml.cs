@@ -35,13 +35,19 @@ namespace UpdateWatcher
         {
             AccessManager.Execute();
 
+            Logger = LogManager.GetLogger("logfile");
+            Logger.Debug("Launched");
+
+
             Config = ConfigurationManager<ISettings, SettingsData>.Create();
             BuildsInfo = ConfigurationManager<IBuilds, Builds>.Create("Builds");
 
-            BuildsManager = new BuildsManager(Settings.DownloadFolder, Builds);
+            BuildsManager = new BuildsManager(Builds);
             BuildsManager.OnBuildAdded += OnBuildAdded;
             BuildsManager.OnBuildsAdded += OnBuildsAdded;
-            BuildsManager.UpdateInfo();
+            BuildsManager.OnBuildRemoved += OnBuildRemoved;
+            BuildsManager.OnBuildsRemoved += OnBuildsRemoved;
+            BuildsManager.UpdateInfo(Settings.DownloadFolder);
 
 
             if (Config.Data.CopyItems == null)
@@ -69,8 +75,6 @@ namespace UpdateWatcher
             WatcherManager.OnWatchCycleCompleted += OnWatchCycleCompleted;
             WatcherManager.OnTick += OnWatcherTick;
 
-            Logger = LogManager.GetLogger("logfile");
-            Logger.Debug("Launched");
 
             MainWindow = new MainWindow();
             MainWindow.Show();
@@ -79,19 +83,26 @@ namespace UpdateWatcher
 
         }
 
-
         #region Events
         private void OnBuildAdded(IBuildData info)
         {
             Logger.Debug($"BuildsManager :: New build info was added: {info.FileName}, Size: {info.FileSize} ({info.FullPath})");
-
         }
 
-        private void OnBuildsAdded(IList<IBuildData> folder)
+        private void OnBuildsAdded(IList<IBuildData> info)
         {
             BuildsInfo.Save();
         }
 
+
+        private void OnBuildRemoved(IBuildData info, BuildsManager.RemoveReason reason)
+        {
+            Logger.Debug($"BuildsManager :: [{reason}] for build: {info.FileName}, Size: {info.FileSize} ({info.FullPath}), removing build from list");
+        }
+        private void OnBuildsRemoved(IList<IBuildData> info)
+        {
+            BuildsInfo.Save();
+        }
 
         #endregion EndOf-Events
 
@@ -125,7 +136,7 @@ namespace UpdateWatcher
 
             if (DownloadManager.DownloadResult == DownloadResult.Success)
             {
-                BuildsManager.UpdateInfo();
+                BuildsManager.UpdateInfo(Settings.DownloadFolder);
 
                 Logger.Debug($"DownloadManager :: New file downloaded: {info.Name}, Size: {info.Length}");
 
@@ -304,6 +315,7 @@ namespace UpdateWatcher
         public void Save()
         {
             RevertBuild();
+            BuildsManager.UpdateInfo(Settings.DownloadFolder);
 
             Config.Save();
             BuildsInfo.Save();

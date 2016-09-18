@@ -9,53 +9,91 @@ namespace Alisha.UpdateWatcher.Managers
 {
     class BuildsManager
     {
+        public enum RemoveReason
+        {
+            FileNotFound,
+            BuildsDirectoryChanged,
+        }
+
         public delegate void DataInfo(string folder);
+
         public delegate void BuildInfo(IBuildData folder);
+        public delegate void RemovedBuildInfo(IBuildData folder, RemoveReason reason);
+
         public delegate void BuildsInfo(IList<IBuildData> folder);
 
+
+
         public event DataInfo OnBuildsDirectoryNotFound;
+
         public event BuildInfo OnBuildAdded;
+        public event RemovedBuildInfo OnBuildRemoved;
+
+        public event BuildsInfo OnBuildsRemoved;
         public event BuildsInfo OnBuildsAdded;
 
 
-        public string BuildsFolder { get; }
         public ObservableCollection<IBuildData> Builds { get; }
 
-        public BuildsManager(string buildsFolder, ObservableCollection<IBuildData> builds)
+        public BuildsManager(ObservableCollection<IBuildData> builds)
         {
-            BuildsFolder = buildsFolder;
+
             Builds = builds;
         }
 
-        public void UpdateInfo()
+        public void UpdateInfo(string buildsFolder)
         {
-            if (!Directory.Exists(BuildsFolder))
+            var directoryInfo = new DirectoryInfo(buildsFolder);
+
+            if (!Directory.Exists(buildsFolder))
             {
-                OnBuildsDirectoryNotFound?.Invoke(BuildsFolder);
+                OnBuildsDirectoryNotFound?.Invoke(buildsFolder);
                 return;
             }
 
-            var count = 0;
-            List<IBuildData> addedBuilds = new List<IBuildData>();
-            foreach (var file in Directory.GetFiles(BuildsFolder))
-            {
-                if (Builds.All(b => b.FullPath != file))
-                {
-                    var fileInfo = new FileInfo(file);
 
+            var builds = Builds.ToList();
+            foreach (var build in builds)
+            {
+                var info = new FileInfo(build.FullPath);
+
+                if (!info.Exists)
+                {
+                    OnBuildRemoved?.Invoke(build, RemoveReason.FileNotFound);
+                    Builds.Remove(build);
+                    continue;
+                }
+                if (info.Directory.FullName != directoryInfo.FullName)
+                {
+                    OnBuildRemoved?.Invoke(build, RemoveReason.BuildsDirectoryChanged);
+                    Builds.Remove(build);
+                    continue;
+                }
+            }
+
+            OnBuildsRemoved?.Invoke(builds.Except(Builds).ToList());
+
+            List<IBuildData> addedBuilds = new List<IBuildData>();
+            foreach (var file in Directory.GetFiles(buildsFolder))
+            {
+                var fileInfo = new FileInfo(file);
+
+                if (Builds.All(b => b.FileName != fileInfo.Name))
+                {
                     var build = new BuildData()
                     {
                         FileName = fileInfo.Name,
                         FileSize = fileInfo.Length,
                         FullPath = fileInfo.FullName
                     };
-                    count++;
+
                     addedBuilds.Add(build);
                     Builds.Add(build);
                     OnBuildAdded?.Invoke(build);
                 }
             }
             OnBuildsAdded?.Invoke(addedBuilds);
+
 
         }
 

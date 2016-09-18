@@ -145,7 +145,7 @@
                 <StackPanel Margin="5,2" HorizontalAlignment="Right" DockPanel.Dock="Bottom">
                     <Button Click="SaveBuildsInfo" Padding="5,0">Save</Button>
                 </StackPanel>
-                <DataGrid AutoGenerateColumns="False" DockPanel.Dock="Top" ItemsSource="{Binding Builds}">
+                <DataGrid x:Name="BuildsGrid" AutoGenerateColumns="False" DockPanel.Dock="Top" ItemsSource="{Binding Builds, UpdateSourceTrigger=PropertyChanged}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding FileName}" Header="File Name" />
                         <DataGridTextColumn Binding="{Binding FileSize}" Header="File Size [bytes]" />
