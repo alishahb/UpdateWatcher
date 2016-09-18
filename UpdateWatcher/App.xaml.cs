@@ -63,7 +63,7 @@ namespace UpdateWatcher
 
             BuildsManager.UpdateInfo(Settings.DownloadFolder);
 
-            if (BuildsManager.LastBuild().FullPath != Settings.LastFileData.FullPath)
+            if (BuildsManager.LastBuild()?.FullPath != Settings.LastFileData?.FullPath)
                 Settings.LastFileData = null;
 
             RevertBuild();
