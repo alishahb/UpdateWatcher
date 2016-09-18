@@ -159,7 +159,7 @@ namespace UpdateWatcher
                     .ContinueWith(a => Rename())
                     .ContinueWith(a => Watcher());
             }
-            
+
             else if (DownloadManager.DownloadResult == DownloadResult.Success)
             {
                 BuildsManager.UpdateInfo(Settings.DownloadFolder);
@@ -348,24 +348,24 @@ namespace UpdateWatcher
             {
                 Logger.Debug($"RevertBuild Manager :: Current build [{Settings.LastFileData.FileName}] marked as ignored, will try revert previous if have one");
 
-                var build = Builds.Where(b => !b.Ignore).Select(b => new FileInfo(b.FullPath)).OrderByDescending(b => b.CreationTimeUtc).FirstOrDefault();
+                var build = BuildsManager.LastBuild();
 
                 if (build == null)
                 {
                     Logger.Debug($"RevertBuild Manager :: No early builds, which are not ignored found");
                     return;
                 }
-
-                Logger.Debug($"RevertBuild Manager :: Found build to revert: {build.Name}, {build.Length} downloaded on {build.CreationTime.ToLongDateString()} {build.CreationTime.ToLongTimeString()}");
+                var info = new FileInfo(build.FullPath);
+                Logger.Debug($"RevertBuild Manager :: Found build to revert: {build.FileName}, {build.FileSize} downloaded on {info.CreationTimeUtc.ToLongDateString()} {info.CreationTimeUtc.ToLongTimeString()}");
 
                 var factory = new TaskFactory();
 
                 factory.StartNew(CleanUp)
-                   .ContinueWith(a => Extract(build.FullName))
+                   .ContinueWith(a => Extract(build.FullPath))
                    .ContinueWith(a => Copy())
                    .ContinueWith(a => Rename());
 
-                Settings.LastFileData = new FileData(build);
+                Settings.LastFileData = build;
 
                 Logger.Debug($"RevertBuild Manager :: Version reverted to build [{Settings.LastFileData.FileName}]");
             }
