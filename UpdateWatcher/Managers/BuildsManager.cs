@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Alisha.UpdateWatcher.Interfaces;
 using Alisha.UpdateWatcher.Models;
+using Alisha.UpdateWatcher.Parserss;
 
 namespace Alisha.UpdateWatcher.Managers
 {
@@ -98,5 +100,12 @@ namespace Alisha.UpdateWatcher.Managers
         }
 
         public bool IsIgnored(string fullPath) => Builds.Any(b => b.Ignore && b.FullPath == fullPath);
+        public IBuildData LastBuild() => Builds.OrderByDescending(b =>
+        {
+            var version = VersionParser.Parse(new FileInfo(b.FullPath).Name);
+            if (string.IsNullOrWhiteSpace(version)) version = "0.0";
+
+            return new Version(version);
+        }).FirstOrDefault();
     }
 }

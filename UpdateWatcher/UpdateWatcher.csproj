@@ -188,6 +188,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Managers\RenameManager.cs" />
+    <Compile Include="Parsers\VersionParser.cs" />
     <Compile Include="Managers\WatcherManager.cs" />
     <Compile Include="Models\BuildData.cs" />
     <Compile Include="Models\Builds.cs" />

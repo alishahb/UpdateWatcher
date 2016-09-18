@@ -61,8 +61,11 @@ namespace UpdateWatcher
             BuildsManager.OnBuildRemoved += OnBuildRemoved;
             BuildsManager.OnBuildsRemoved += OnBuildsRemoved;
 
-
             BuildsManager.UpdateInfo(Settings.DownloadFolder);
+
+            if (BuildsManager.LastBuild().FullPath != Settings.LastFileData.FullPath)
+                Settings.LastFileData = null;
+
             RevertBuild();
             Config.Save();
 
@@ -131,7 +134,7 @@ namespace UpdateWatcher
         {
             if (DownloadManager.DownloadResult == DownloadResult.Failed)
             {
-                Logger.Debug($"DownloadManager :: Check Failed: {DownloadManager.ErrorMessage} [{info.Name}]");
+                Logger.Debug($"DownloadManager :: Check Failed: {DownloadManager.ErrorMessage} [{info?.Name ?? "None"}]");
                 return;
             }
 
@@ -141,7 +144,23 @@ namespace UpdateWatcher
                 return;
             }
 
-            if (DownloadManager.DownloadResult == DownloadResult.Success)
+            if (DownloadManager.DownloadResult == DownloadResult.NotChanged && Settings.LastFileData == null)
+            {
+                Settings.LastFileData = new FileData(info);
+                Logger.Debug($"LastFileData info is empty, updating to current file {info.Name}");
+
+                Config.Save();
+
+                var factory = new TaskFactory();
+
+                factory.StartNew(CleanUp)
+                    .ContinueWith(a => Extract(Config.Data.LastFileData.FullPath))
+                    .ContinueWith(a => Copy())
+                    .ContinueWith(a => Rename())
+                    .ContinueWith(a => Watcher());
+            }
+            
+            else if (DownloadManager.DownloadResult == DownloadResult.Success)
             {
                 BuildsManager.UpdateInfo(Settings.DownloadFolder);
 
@@ -152,6 +171,7 @@ namespace UpdateWatcher
                 factory.StartNew(() => CheckIgnore(info));
             }
             else Watcher();
+
 
         }
 
