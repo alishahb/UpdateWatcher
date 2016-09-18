@@ -135,7 +135,11 @@ namespace UpdateWatcher
                 return;
             }
 
-            Settings.LastFileData = new FileData(info);
+            if (!info.Exists)
+            {
+                Logger.Debug($"DownloadManager :: Failed to save file: {info.FullName}");
+                return;
+            }
 
             if (DownloadManager.DownloadResult == DownloadResult.Success)
             {
@@ -145,24 +149,15 @@ namespace UpdateWatcher
 
                 var factory = new TaskFactory();
 
-                factory.StartNew(() => CheckIgnore(info))
-                    .ContinueWith(a => Watcher());
+                factory.StartNew(() => CheckIgnore(info));
             }
-
+            else Watcher();
 
         }
 
         private void OnDownloadDataCompleted(FileInfo info)
         {
             Logger.Debug($"DownloadManager :: Check completed, status: {DownloadManager.DownloadResult}");
-
-            if (DownloadManager.DownloadResult == DownloadResult.Success || DownloadManager.DownloadResult == DownloadResult.NotChanged)
-            {
-                CheckIgnore(info);
-            }
-
-            Watcher();
-
         }
 
 
@@ -187,7 +182,8 @@ namespace UpdateWatcher
                 factory.StartNew(CleanUp)
                     .ContinueWith(a => Extract(Config.Data.LastFileData.FullPath))
                     .ContinueWith(a => Copy())
-                    .ContinueWith(a => Rename());
+                    .ContinueWith(a => Rename())
+                    .ContinueWith(a => Watcher());
 
                 return;
             }
@@ -270,7 +266,7 @@ namespace UpdateWatcher
 
             if (!Config.Data.DaemonMode)
             {
-                Logger.Debug($"All done, nothing to do");
+                Logger.Debug($"All done, nothing to do ({DownloadManager.DownloadResult})");
                 OnWorkCompleted?.Invoke(this, null);
                 return false;
             }

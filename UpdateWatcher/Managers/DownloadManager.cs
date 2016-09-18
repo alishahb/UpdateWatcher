@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Net.Mime;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Windows;
 using Alisha.UpdateWatcher.Annotations;
 
@@ -20,7 +21,7 @@ namespace Alisha.UpdateWatcher.Managers
     }
 
     public delegate void FileInfoHandler(FileInfo info);
-        
+
 
     public class DownloadManager : INotifyPropertyChanged
     {
@@ -29,7 +30,7 @@ namespace Alisha.UpdateWatcher.Managers
         public event DownloadProgressChangedEventHandler OnDownloadProgressChanged;
         public event FileInfoHandler OnDownloadedFileSaved;
         public event FileInfoHandler OnDownloadStarted;
-        
+
 
         private static object locker = new Object();
 
@@ -174,6 +175,16 @@ namespace Alisha.UpdateWatcher.Managers
             var info = new FileInfo(_destination);
             SetDownloadResult(DownloadResult.Success, info);
 
+            var timer = new Stopwatch();
+            timer.Start();
+            while (!new FileInfo(_destination).Exists)
+            {
+                Thread.Sleep(50);
+                Thread.Yield();
+                if (timer.ElapsedMilliseconds > 5000)
+                    break;
+            }
+
             var data = e.Result;
 
 
@@ -197,6 +208,9 @@ namespace Alisha.UpdateWatcher.Managers
             DownloadResult = downloadResult;
 
             OnDownloadDataCompleted?.Invoke(info);
+
+            if(DownloadResult != DownloadResult.Success)
+                OnDownloadedFileSaved?.Invoke(info);
 
             return info;
         }
