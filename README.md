@@ -29,7 +29,7 @@ _In Example folder you can finde settings file for Honorbuddy._
 
 
 #Download compiled
-* **Last success build** from Appveyor: https://ci.appveyor.com/project/alishahb/updatewatcher/build/artifacts
+* **Last development build** from Appveyor: https://ci.appveyor.com/project/alishahb/updatewatcher/build/artifacts
 * **Last release build** from Github: https://github.com/alishahb/UpdateWatcher/releases/
 
 #Require .Net 4.6.1
