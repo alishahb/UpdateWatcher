@@ -25,6 +25,7 @@ _In Example folder you can finde settings file for Honorbuddy._
 ![GUI Screenshot - Settings](https://snag.gy/oIhLnd.jpg)
 ![GUI Screenshot - Downloading](https://snag.gy/AIFkOP.jpg)
 ![GUI Screenshot - Daemon](https://snag.gy/AcR0vB.jpg)
+![GUI Screenshot - Builds](https://snag.gy/ish87Q.jpg)
 
 
 #Download compiled
