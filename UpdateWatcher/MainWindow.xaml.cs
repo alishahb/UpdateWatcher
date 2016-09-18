@@ -93,6 +93,7 @@ namespace UpdateWatcher
             Application.Current.Exit += Current_Exit;
 
             ((App)App.Current).OnWorkCompleted += OnWorkCompleted;
+            ((App)App.Current).OnWorkStarted += OnWorkStarted;
             ((App)App.Current).OnTick += OnTick;
             ((App)App.Current).OnTick += OnTick;
 
@@ -160,6 +161,11 @@ namespace UpdateWatcher
             ((App)App.Current).Download();
 
         }
+        private void OnWorkStarted(object sender, EventArgs e)
+        {
+            OnStarted();
+        }
+
 
         private void OnStarted()
         {

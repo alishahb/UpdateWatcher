@@ -99,8 +99,8 @@ namespace Alisha.UpdateWatcher.Managers
 
         }
 
-        public bool IsIgnored(string fullPath) => Builds.Any(b => b.Ignore && b.FullPath == fullPath);
-        public IBuildData LastBuild() => Builds.OrderByDescending(b =>
+        public bool IsIgnored(string fileName) => Builds.Any(b => b.Ignore && b.FileName == fileName);
+        public IBuildData LastBuild() => Builds.Where(b=> !b.Ignore).OrderByDescending(b =>
         {
             var version = VersionParser.Parse(new FileInfo(b.FullPath).Name);
             if (string.IsNullOrWhiteSpace(version)) version = "0.0";

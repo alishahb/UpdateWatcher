@@ -18,6 +18,7 @@ namespace UpdateWatcher
     /// </summary>
     public partial class App : Application
     {
+        public event EventHandler OnWorkStarted;
         public event EventHandler OnWorkCompleted;
         public event EventHandler OnTick;
 
@@ -63,11 +64,6 @@ namespace UpdateWatcher
 
             BuildsManager.UpdateInfo(Settings.DownloadFolder);
 
-            if (BuildsManager.LastBuild()?.FullPath != Settings.LastFileData?.FullPath)
-                Settings.LastFileData = null;
-
-            RevertBuild();
-            Config.Save();
 
             DownloadManager = new DownloadManager(Config.Data.DownloadFolder);
 
@@ -85,6 +81,10 @@ namespace UpdateWatcher
             MainWindow = new MainWindow();
             MainWindow.Show();
 
+            OnWorkStarted?.Invoke(this, null);
+            RevertBuild();
+            Config.Save();
+            OnWorkCompleted?.Invoke(this, null);
 
 
         }
@@ -186,10 +186,10 @@ namespace UpdateWatcher
 
         private void CheckIgnore(FileInfo info)
         {
-            if (BuildsManager.IsIgnored(info.FullName))
+            if (BuildsManager.IsIgnored(info.Name))
                 Logger.Debug($"CheckIgnore Manager :: This build marked as ignored {info.Name}, Size: {info.Length}, skipping");
 
-            if (!BuildsManager.IsIgnored(info.FullName) && Settings.LastFileData?.FullPath != info.FullName)
+            if (!BuildsManager.IsIgnored(info.Name) && Settings.LastFileData?.FullPath != info.FullName)
             {
                 Settings.LastFileData = new FileData(info);
 
@@ -344,7 +344,7 @@ namespace UpdateWatcher
         private void RevertBuild()
         {
             if (Settings.LastFileData == null) return;
-            if (BuildsManager.IsIgnored(Settings.LastFileData.FullPath))
+            if (BuildsManager.IsIgnored(Settings.LastFileData.FileName))
             {
                 Logger.Debug($"RevertBuild Manager :: Current build [{Settings.LastFileData.FileName}] marked as ignored, will try revert previous if have one");
 
