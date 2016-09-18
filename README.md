@@ -12,6 +12,8 @@ Be always in touch! ლ(ಠ益ಠლ) .
 * **Copy files:** specified by Settings from `Extract folder`to other locations
 * **Rename files**: in `Extract folder` with filtering by name and extension, support option to enable recursive check in subfolders
 * **Delete Existing**: option to delete existing folder and all contents, if needed (i.e. to perform **Clean install**)
+* **Manage builds**: Store all info about downloaded builds, ability to mark them as ignored if needed
+* **Revert builds**: If current build marked as ignored, it will be reverted to previous one, if available
 * **Mods:** 
   * _Manual_: one time check by buttpn press
   * _Daemon_: run check each time when specified delay timeout passed
